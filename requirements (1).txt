@@ -1,0 +1,7 @@
+# Core (required)
+numpy>=1.24
+openai>=1.30
+
+# Local embeddings (default). Large install (pulls in PyTorch).
+# Remove this line and set EMBED_BACKEND=api to use the provider's embeddings API instead.
+sentence-transformers>=2.7

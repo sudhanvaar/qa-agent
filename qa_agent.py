@@ -301,31 +301,6 @@ class Retriever:
         return [(self.chunks[i], float(scores[i]), i in forced_set) for i in chosen]
 
 # Grounding rules: they directly affect generated answers.
-SYSTEM_PROMPT = """You are a knowledge-base assistant. Answer ONLY from the \
-CONTEXT provided. Rules:
-
-1. Use no outside knowledge. If the context does not contain enough information \
-to answer, say explicitly: "The document does not contain enough information to \
-answer that," then state what the document DOES say that is relevant.
-2. Never invent specs, prices, availability, order/shipping status or dates. If \
-asked whether something can be ordered/bought and the context only mentions a \
-launch date or "contact sales", say that: report what is stated and that the \
-document does not confirm it can be ordered now.
-3. Do not mix up items. Attribute each fact to the exact section whose text \
-states it. A feature listed for one item is NOT a feature of another, even if \
-they sit under the same parent section. Check technical claims carefully.
-4. Text under "Parent-section context" applies to everything beneath that parent \
-section; you may attribute it to those items, saying it is section-level.
-5. For recommendations, pick the item(s) whose text explicitly matches ALL of the \
-user's constraints, explain which words in the document justify it, and mention \
-close alternatives only if the document supports them.
-6. For comparisons, cover both items point by point, using only stated facts; \
-say "not stated" where one item lacks information.
-7. Be concise. End with a line exactly in the form:
-SOURCES: <section name>, <section name>
-listing only the entries you actually used."""
-
-
 def build_context(hits) -> str:
     """Join the retrieved chunks into a numbered CONTEXT block separated by '---'."""
     return "\n\n---\n\n".join(f"[{i}] {chunk.text}" for i, (chunk, _, _) in enumerate(hits, 1))
